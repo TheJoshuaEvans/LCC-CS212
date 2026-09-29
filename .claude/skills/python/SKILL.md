@@ -24,6 +24,17 @@ uv run ruff format .            # format
 
 After writing or editing Python, run `ruff check` and `ruff format` on the changed files, and pytest if there are tests.
 
+## Testing
+
+**pytest**, with plain `assert`s and plain test functions (no `unittest` classes). The course doesn't require tests; they're ours, for confidence and for code reviews.
+
+- Put tests next to the code they test: `lab01/shipping_cost.py` → `lab01/test_shipping_cost.py`. pytest's default import mode makes `from shipping_cost import ...` work from there.
+- Test the logic functions, not `input()`/`print()`. That's another reason to keep I/O in `main()`.
+- **Rule tables → `@pytest.mark.parametrize`**, one tuple per table row, so every case passes or fails on its own. Spelled `parametrize`; pytest rejects `parameterize`.
+- Always include the boundary values (exactly 5 kg, exactly 90 points). Off-by-one mistakes like `<` vs `<=` are the most likely bug in these labs.
+- Use `ids=[...]` or `pytest.param(..., id="...")` when the auto-generated IDs aren't readable.
+- Test files are **not** part of lab submissions. When a lab specifies exact deliverables, remind the user to upload only those.
+
 ## Dependencies
 
 - Add runtime libraries with `uv add <pkg>`, dev tools with `uv add --dev <pkg>`. Both update `pyproject.toml` and `uv.lock` — commit the two together.
