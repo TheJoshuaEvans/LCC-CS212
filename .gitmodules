@@ -1,0 +1,4 @@
+[submodule "course-materials"]
+	path = course-materials
+	url = https://github.com/lcc-cit/CS212-CourseMaterials.git
+	branch = main
