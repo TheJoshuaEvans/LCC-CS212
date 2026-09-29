@@ -6,3 +6,8 @@ __pycache__/
 *.pyc
 .venv/
 .ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+
+# Claude Code per-machine settings (project skills in .claude/ are shared)
+.claude/settings.local.json
