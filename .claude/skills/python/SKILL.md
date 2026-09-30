@@ -10,8 +10,17 @@ Standard Python packaging (`pyproject.toml` + `.venv`), managed with **uv**. Not
 ## Environment
 
 - **Python 3.12**, pinned in `.python-version`. Don't bump it: the course's TensorFlow unit needs ≤3.12 (per `course-materials/docs/LectureNotes/SetUpPythonAndLibrariesForAI.md`). Recheck that guide before changing.
-- System `python3` is 3.10 — never use it for project code. Go through `uv run` or `.venv/bin/python`.
+- Never use a system Python for project code; it may be the wrong version or missing entirely. Go through `uv run`, which works the same on every machine. If you need the interpreter path: `.venv/bin/python` on Linux/macOS, `.venv\Scripts\python.exe` on Windows.
 - The project is not an installable package; lab code is plain scripts.
+
+### Machines
+
+The repo may be cloned on any OS, so keep project files OS-neutral:
+- **Paths:** forward slashes work in `uv run` commands and Python code on both. Use `pathlib`, not hard-coded separators.
+- **Settings:** don't pin OS-specific paths in `.vscode/settings.json`; the Python extension finds `.venv` by itself.
+- **Line endings:** Windows uses `core.autocrlf=true`. If git suddenly shows every file modified with no real changes, check `git diff --ignore-cr-at-eol --stat` before assuming edits.
+- **Timezones:** Windows has no system tz database, so `zoneinfo` needs the `tzdata` package (a Windows-only dev dependency here). Add it as a runtime dependency too if lab code ever uses `zoneinfo`.
+- **Fresh machine setup:** install uv (Windows: `winget install astral-sh.uv`), then `uv sync`. uv downloads Python 3.12 itself; no separate Python install is needed. The Canvas key in `.env` is gitignored, so it doesn't come with the clone.
 
 ## Everyday commands
 
@@ -40,7 +49,7 @@ After writing or editing Python, run `ruff check` and `ruff format` on the chang
 - Add runtime libraries with `uv add <pkg>`, dev tools with `uv add --dev <pkg>`. Both update `pyproject.toml` and `uv.lock` — commit the two together.
 - Add libraries when a unit actually needs them, not ahead of time. The course's stack: numpy, scipy, matplotlib, scikit-learn, tensorflow, pillow, later an LLM SDK (Gemini) and MCP. Check the unit's lecture notes/lab for version pins before adding.
 - Never `pip install` into `.venv` while also using `uv run`/`uv sync`: uv syncs the environment to the lock file exactly and **silently removes** anything pip added. If something needs pip (unusual build, experimental install), say so, and either add it through uv or agree with the user to work pip-only for that task.
-- If uv itself is the obstacle (its standalone Python builds occasionally trip on tkinter or C-extension builds), stop and tell the user rather than working around it. The user has had trouble with uv on unusual setups and wants to know.
+- If uv itself is the obstacle (its standalone Python builds occasionally trip on tkinter or C-extension builds), stop and tell the user rather than working around it, so they can decide how to proceed.
 
 ## Style — the professor's checklist
 

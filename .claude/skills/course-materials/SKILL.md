@@ -42,7 +42,7 @@ Canvas has no Lab 3, so from Lab 4 on each Canvas number is one higher than the 
 | Lab 7 | `Lab06-ChatCompletion` |
 | Lab 8 | `Lab07-MCP` |
 
-The user speaks in Canvas numbers. Verify against the Canvas module links if this table seems off — it may change.
+Students usually speak in Canvas numbers. Verify against the Canvas module links if this table seems off — it may change.
 
 Some lab instructions are Canvas pages, not repo links (currently Lab 4 Versions B/C, Labs 6–8). Check `modules` for the item type: for a `Page`, read it with `canvas.py page <slug>`, and compare with the repo version, since they can differ.
 
@@ -51,7 +51,7 @@ Some lab instructions are Canvas pages, not repo links (currently Lab 4 Versions
 Use the bundled read-only script (it loads `CANVAS_KEY` from the project `.env` and never prints it):
 
 ```bash
-python3 .claude/skills/course-materials/scripts/canvas.py <command>
+uv run python .claude/skills/course-materials/scripts/canvas.py <command>
 ```
 
 | Command | Gives |
@@ -64,14 +64,14 @@ python3 .claude/skills/course-materials/scripts/canvas.py <command>
 | `syllabus` | Canvas syllabus body |
 | `get <path>` | raw JSON for any GET under `/courses/3948` (e.g. `/quizzes`, `/files`) |
 
-**The key expires.** Lane's Canvas tokens last at most 90 days (this one was working on 2026-09-29, so expect expiry no later than about 2026-12-28 — near the end of term). An expired or revoked key makes the script exit with `CANVAS AUTH FAILED (401)`. When you see that, stop retrying and tell the user to renew: Canvas → Account → Settings → Approved Integrations → + New Access Token, then replace `CANVAS_KEY` in `.env`. A 403 or 404 is a permissions or path problem, not an expired key.
+**The key expires.** Lane's Canvas tokens last at most 90 days, so a key made early in the term may expire before it ends. The key lives in `.env`, which is gitignored, so each machine needs its own copy. An expired or revoked key makes the script exit with `CANVAS AUTH FAILED (401)`. When you see that, stop retrying and tell the user to renew: Canvas → Account → Settings → Approved Integrations → + New Access Token, then replace `CANVAS_KEY` in `.env`. A 403 or 404 is a permissions or path problem, not an expired key.
 
 Rules:
 - **Read only.** Never submit, post, or modify anything on Canvas — the key acts as the user.
 - Never echo, log, or pass the key on a command line; go through the script.
 - Canvas due dates are what count. If they disagree with dates in the repo, trust Canvas and point out the mismatch.
 
-## The user
+## Labs
 
-- Lab group (A/B/C): unknown yet. Once the user says, note it here so lab lookups can go straight to their group's folder.
-- Lab workflow: beta posted to team Discord → peer code review (submitted on Canvas) → production version with the partner's review, "Prod." column filled in.
+- Each student is in one lab group (A/B/C) with its own instructions. If you don't know the user's group, ask, then save it to memory so later lookups can go straight to that folder.
+- Workflow: beta posted to team Discord → peer code review (submitted on Canvas) → production version with the partner's review, "Prod." column filled in.
