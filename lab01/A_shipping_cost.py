@@ -62,3 +62,13 @@ def calculate_shipping_cost(weight_kg: float, zone: str) -> float:
         + weight_tier_surcharge_dollars[_get_weight_tier(weight_kg)]
     )
     return total_cost_dollars
+
+if __name__ == "__main__":
+    # Example usage
+    weight = float(input("Enter package weight in kg: "))
+    zone = input("Enter destination zone (A/B/C): ")
+    try:
+        cost = calculate_shipping_cost(weight, zone)
+        print(f"Shipping cost: ${cost:.2f}")
+    except ValueError as e:
+        print(f"Error: {e}")

@@ -55,16 +55,24 @@ def recommend_product(horizon_years: float, risk_tolerance: str) -> str:
 
     result = ""
     if horizon_years < term_breakpoint_years:
-        # Short term
         if risk_tolerance == tolerance_levels["low"]:
             result = product_names["high_yield"]
         else:  # High tolerance
             result = product_names["short_term"]
     else:
-        # Short term
         if risk_tolerance == tolerance_levels["low"]:
             result = product_names["government"]
         else:  # High tolerance
             result = product_names["diverse"]
 
     return result
+
+if __name__ == "__main__":
+    # Example usage
+    horizon = float(input("Enter investment horizon in years: "))
+    risk = input("Enter risk tolerance (Low/High): ")
+    try:
+        recommendation = recommend_product(horizon, risk)
+        print(f"Recommended product: {recommendation}")
+    except ValueError as e:
+        print(f"Error: {e}")

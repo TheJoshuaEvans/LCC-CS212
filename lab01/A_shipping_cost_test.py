@@ -1,6 +1,8 @@
 # Joshua Evans (thejoshuaevans.com)
 """Tests for the Lab 1 (Group A, Part 1) shipping cost calculator."""
 
+import sys
+
 import pytest
 from A_shipping_cost import calculate_shipping_cost
 
@@ -59,3 +61,7 @@ def test_invalid_zone_raises(zone):
     """An invalid zone should raise a value error"""
     with pytest.raises(ValueError):
         calculate_shipping_cost(1, zone)
+
+
+if __name__ == "__main__":
+    sys.exit(pytest.main([__file__]))

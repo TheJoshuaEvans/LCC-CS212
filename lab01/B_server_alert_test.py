@@ -1,6 +1,8 @@
 # Joshua Evans (thejoshuaevans.com)
 """Tests for the Lab 1 (Group B, Part 2) server status and priority alert system."""
 
+import sys
+
 import pytest
 from B_server_alert import get_alert_priority
 
@@ -41,3 +43,7 @@ def test_negative_hours_raises(hours_since_check):
     """A negative time since last check should raise a value error"""
     with pytest.raises(ValueError):
         get_alert_priority(3, hours_since_check)
+
+
+if __name__ == "__main__":
+    sys.exit(pytest.main([__file__]))

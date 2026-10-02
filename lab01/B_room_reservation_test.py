@@ -1,6 +1,8 @@
 # Joshua Evans (thejoshuaevans.com)
 """Tests for the Lab 1 (Group B, Part 1) meeting room reservation system."""
 
+import sys
+
 import pytest
 from B_room_reservation import recommend_room
 
@@ -56,3 +58,7 @@ def test_invalid_attendees_raises(attendees):
     """Fewer than one attendee should raise a value error"""
     with pytest.raises(ValueError):
         recommend_room(attendees, False)
+
+
+if __name__ == "__main__":
+    sys.exit(pytest.main([__file__]))

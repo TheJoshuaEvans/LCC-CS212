@@ -1,6 +1,8 @@
 # Joshua Evans (thejoshuaevans.com)
 """Tests for the Lab 1 (Group C, Part 1) PC component compatibility checker."""
 
+import sys
+
 import pytest
 from C_pc_compatibility import check_compatibility
 
@@ -56,3 +58,7 @@ def test_original_program_examples(socket_type, ram_type, expected_status):
 def test_input_is_case_insensitive(socket_type, ram_type):
     """Socket and RAM types should be accepted in any case"""
     assert _status(socket_type, ram_type).startswith(COMPATIBLE)
+
+
+if __name__ == "__main__":
+    sys.exit(pytest.main([__file__]))

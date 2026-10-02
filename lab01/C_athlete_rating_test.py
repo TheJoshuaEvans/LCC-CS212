@@ -1,6 +1,8 @@
 # Joshua Evans (thejoshuaevans.com)
 """Tests for the Lab 1 (Group C, Part 2) athlete performance rating system."""
 
+import sys
+
 import pytest
 from C_athlete_rating import rate_athlete
 
@@ -40,3 +42,7 @@ def test_out_of_range_score_raises(speed_score, strength_score):
     """A score outside 0-100 should raise a value error"""
     with pytest.raises(ValueError):
         rate_athlete(speed_score, strength_score)
+
+
+if __name__ == "__main__":
+    sys.exit(pytest.main([__file__]))

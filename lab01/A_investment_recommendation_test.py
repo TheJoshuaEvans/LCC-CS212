@@ -1,6 +1,8 @@
 # Joshua Evans (thejoshuaevans.com)
 """Tests for the Lab 1 (Group A, Part 2) financial product recommendation system."""
 
+import sys
+
 import pytest
 from A_investment_recommendation import recommend_product
 
@@ -45,3 +47,7 @@ def test_negative_horizon_raises(horizon_years):
     """A negative investment horizon should raise a value error"""
     with pytest.raises(ValueError):
         recommend_product(horizon_years, "LOW")
+
+
+if __name__ == "__main__":
+    sys.exit(pytest.main([__file__]))

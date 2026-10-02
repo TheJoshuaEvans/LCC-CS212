@@ -37,7 +37,8 @@ After writing or editing Python, run `ruff check` and `ruff format` on the chang
 
 **pytest**, with plain `assert`s and plain test functions (no `unittest` classes). The course doesn't require tests; they're ours, for confidence and for code reviews.
 
-- Put tests next to the code they test: `lab01/shipping_cost.py` → `lab01/test_shipping_cost.py`. pytest's default import mode makes `from shipping_cost import ...` work from there.
+- Put tests next to the code they test, named with a `_test.py` suffix: `lab01/A_shipping_cost.py` → `lab01/A_shipping_cost_test.py`. pytest's default import mode makes `from A_shipping_cost import ...` work from there.
+- End every test file with a block that lets it run directly (`uv run python lab01/A_shipping_cost_test.py`, or VS Code's Run button): `if __name__ == "__main__": sys.exit(pytest.main([__file__]))`, with `import sys` at the top. `uv run pytest` ignores the block.
 - Test the logic functions, not `input()`/`print()`. That's another reason to keep I/O in `main()`.
 - **Rule tables → `@pytest.mark.parametrize`**, one tuple per table row, so every case passes or fails on its own. Spelled `parametrize`; pytest rejects `parameterize`.
 - Always include the boundary values (exactly 5 kg, exactly 90 points). Off-by-one mistakes like `<` vs `<=` are the most likely bug in these labs.
