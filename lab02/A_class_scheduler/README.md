@@ -76,28 +76,29 @@ The tests check that:
 
 - the schedule for the real data follows all eight rules,
 - each data set in `unsolvable_data` is rejected, with the expected constraints among the conflicts,
-- each of those data sets can be scheduled once the rule it breaks is switched off.
+- each of those data sets can be scheduled once the rule it breaks is switched off,
+- each of those schedules, which had to break the rule that was switched off, is caught by the check for that rule.
 
 ## Requirements
 
 The text of each item is from the lab instructions. Notes in italics say where this program does something differently.
 
 - [x] **1. Data files.** Put the three CSV files in your project folder.
-- [x] **2. Loading data.** Load each CSV file into a list of dictionaries, for example with `csv.DictReader`. Convert numbers to `int` and split the semicolon lists into Python lists. *Loaded into data classes.*
+- [x] **2. Loading data.** Load each CSV file into a list of dictionaries, for example with `csv.DictReader`. Convert numbers to `int` and split the semicolon lists into Python lists. *Note: Loaded into data classes instead.*
 - [x] **3. Decision variables.** For each section, create three Z3 `Int` variables: its time slot, its instructor (an index into the instructors list) and its classroom (an index into the classrooms list).
 - [x] **4. Constraints.** Add constraints for all six scheduling rules.
-- [x] **5. Solving.** Use a Z3 `Solver` to find a schedule. Read the values out of the model and return the schedule as a list of dictionaries. Print the schedule in a readable table sorted by time slot, showing the time, section, course, instructor and classroom. *Returned as a list of `Decision` objects.*
+- [x] **5. Solving.** Use a Z3 `Solver` to find a schedule. Read the values out of the model and return the schedule as a list of dictionaries. Print the schedule in a readable table sorted by time slot, showing the time, section, course, instructor and classroom. *Note: Returned as a list of `Decision` objects.*
 - **6. Explaining an impossible schedule.**
   - [x] Create one Boolean tracking variable per constraint group and add each constraint as `Implies(group_flag, constraint)`. Call `check()` with all the flags as assumptions. *Each constraint is tracked by name with `assert_and_track`.*
-  - [x] When the result is `unsat`, print the names of the groups in `unsat_core()`. *Prints the name of each conflicting constraint, which starts with its group.*
-  - [x] Make a folder named `unsolvable_data` with three modified copies of the data files, each of which breaks a different rule. *Eight copies, one for each rule.*
+  - [x] When the result is `unsat`, print the names of the groups in `unsat_core()`. *Note: Prints the name of each conflicting constraint, which starts with its group.*
+  - [x] Make a folder named `unsolvable_data` with three modified copies of the data files, each of which breaks a different rule. *Note: Eight copies, one for each rule.*
   - [x] Your program must report the conflicting groups for each one.
   - [x] Keep each conflict small.
 - [x] **7. Separation of concerns.** Keep the Z3 model and solving code in its own module, separate from file loading and from user input and output.
-- **8. Testing.** Write a test module with a function that checks a schedule against all six rules in plain Python, without using Z3. *One test function for each rule.* Use it to test that:
+- **8. Testing.** Write a test module with a function that checks a schedule against all six rules in plain Python, without using Z3. *Note: One check function for each rule that can be switched off.* Use it to test that:
   - [x] the schedule from your real data passes every rule,
   - [x] each data set in `unsolvable_data` is reported as `unsat` with the expected constraint group in the core,
-  - [ ] the checker itself catches a schedule that you broke on purpose, for example by moving two sections into the same classroom at the same time.
+  - [x] the checker itself catches a schedule that you broke on purpose, for example by moving two sections into the same classroom at the same time. *Note: The broken schedules come from solving each `unsolvable_data` set with its rule switched off.*
 
 ### Challenge 1: Classroom capacity and instructor availability
 
@@ -114,10 +115,4 @@ The text of each item is from the lab instructions. Notes in italics say where t
 ### Challenge 2: Minimizing part-time sections
 
 - [x] Find a schedule that has as few sections taught by part-time instructors as possible, and print that number and the schedule that goes with it.
-- [x] **Option A: A loop with `push()` and `pop()`.** Keep using your `Solver`. In a loop, add a constraint that `part_time_sections` is at most *k*, check, then lower *k* and try again. Stop when the check is `unsat` or `unknown`, or when *k* reaches 6. *The lowest possible value is worked out from the data.*
-
-## Where it differs from the instructions
-
-- **Every constraint has its own name.** The instructions call for one tracking flag for each rule, added with `Implies`. This program uses Z3's `assert_and_track` to give each constraint its own name, so a conflict report shows which sections, instructors and rooms are involved as well as which rule. The rule is the first part of each name.
-- **Data classes hold the data.** Rows are loaded into data classes in place of dictionaries, and the schedule is returned as a list of `Decision` objects.
-- **Challenge 2 uses a `Solver` for everything.** It finds the fewest part-time sections with the `push()` and `pop()` loop (Option A). Naming every constraint made the `Optimize` class about ten times slower on this data.
+- [x] **Option A: A loop with `push()` and `pop()`.** Keep using your `Solver`. In a loop, add a constraint that `part_time_sections` is at most *k*, check, then lower *k* and try again. Stop when the check is `unsat` or `unknown`, or when *k* reaches 6. *Note: The lowest possible value is calculated dynamically.*
