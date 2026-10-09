@@ -1,5 +1,7 @@
 import argparse
+
 from class_scheduler_data import Flags
+
 
 def parse_arguments() -> argparse.Namespace:
     """
@@ -8,7 +10,9 @@ def parse_arguments() -> argparse.Namespace:
     Returns:
         argparse.Namespace: The parsed arguments, one attribute per argument
     """
-    parser = argparse.ArgumentParser(description="Schedule class sections, instructors and classrooms")
+    parser = argparse.ArgumentParser(
+        description="Schedule class sections, instructors and classrooms"
+    )
     parser.add_argument(
         "data_folder",
         nargs="?",
@@ -30,9 +34,9 @@ def parse_arguments() -> argparse.Namespace:
     parsed = parser.parse_args()
     disabled_flags = set(parsed.disable_flags)
     flags = Flags()
-    for flag_key, flag_value in flags:
+    for flag_key, _flag_value in flags:
         if flag_key in disabled_flags:
             setattr(flags, flag_key, False)
-    
+
     parsed.flags = flags
     return parsed

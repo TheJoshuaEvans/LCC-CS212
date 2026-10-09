@@ -1,25 +1,28 @@
 import csv
-
 from collections.abc import Callable
 from dataclasses import dataclass, fields
 from enum import StrEnum
 from pathlib import Path
 
+
 class CsvFilename(StrEnum):
-    CLASSROOMS = "classrooms.csv",
-    INSTRUCTORS = "instructors.csv",
-    SECTIONS = "sections.csv",
+    CLASSROOMS = ("classrooms.csv",)
+    INSTRUCTORS = ("instructors.csv",)
+    SECTIONS = ("sections.csv",)
+
 
 class SolverConflictError(Exception):
     """Raised when the solver encounters a conflict that prevents a valid schedule from being generated."""
 
-    def __init__(self, message: str, conflicts: list[str] = None):
+    def __init__(self, message: str, conflicts: list[str] | None = None):
         raw_conflicts = conflicts or []
         self.conflicts = [str(c) for c in raw_conflicts]
 
         if self.conflicts:
             # One conflict per line, sorted so that conflicts from the same rule sit together
-            conflict_lines = "\n".join(f"  - {conflict}" for conflict in sorted(self.conflicts))
+            conflict_lines = "\n".join(
+                f"  - {conflict}" for conflict in sorted(self.conflicts)
+            )
             message = f"{message}\nConflicts ({len(self.conflicts)}):\n{conflict_lines}"
         super().__init__(message)
 
@@ -35,9 +38,10 @@ def _normalize_path(dirname: str, filename: str) -> str:
     Returns:
         str: The absolute path to the file
     """
-    root_dir_name = Path(__file__).parent # The directory containing this script
+    root_dir_name = Path(__file__).parent  # The directory containing this script
     full_path = Path(root_dir_name, dirname, filename)
     return full_path
+
 
 def _read_csv(dirname: str, filename: str, cb: Callable[[dict[str, str]], None]):
     """
@@ -61,12 +65,15 @@ class Classroom:
     """
     A single physical classroom in the school building where class sections can meet and instructors teach
     """
+
     @staticmethod
     def read(dirname: str):
         classrooms = []
-        _read_csv(dirname, CsvFilename.CLASSROOMS, lambda row: classrooms.append(
-            Classroom(row['room_id'], int(row['seats']))
-        ))
+        _read_csv(
+            dirname,
+            CsvFilename.CLASSROOMS,
+            lambda row: classrooms.append(Classroom(row["room_id"], int(row["seats"]))),
+        )
         return classrooms
 
     room_id: str
@@ -83,16 +90,23 @@ class Instructor:
     in different subjects, and they have different limits on the number of courses they can
     teach in a single term
     """
+
     @staticmethod
     def read(dirname: str):
         instructors = []
-        _read_csv(dirname, CsvFilename.INSTRUCTORS, lambda row: instructors.append(Instructor(
-            row["instructor_id"],
-            row["name"],
-            int(row["max_sections"]),
-            row["qualified_courses"].split(";"),
-            [int(slot) for slot in row["unavailable_slots"].split(";")]
-        )))
+        _read_csv(
+            dirname,
+            CsvFilename.INSTRUCTORS,
+            lambda row: instructors.append(
+                Instructor(
+                    row["instructor_id"],
+                    row["name"],
+                    int(row["max_sections"]),
+                    row["qualified_courses"].split(";"),
+                    [int(slot) for slot in row["unavailable_slots"].split(";")],
+                )
+            ),
+        )
         return instructors
 
     instructor_id: str
@@ -111,21 +125,32 @@ class Instructor:
     """Time slots during which the instructor is unavailable"""
 
 
+PART_TIME_ALLOWED_SECTION_COUNT = 2
+"""The number of sections a part-time instructor is allowed to teach"""
+
+
 @dataclass
 class Section:
     """
     A class cohort. This represents the students taking a particular class at a particular time
     """
+
     @staticmethod
     def read(dirname: str):
         sections = []
-        _read_csv(dirname, CsvFilename.SECTIONS, lambda row: sections.append(Section(
-            row['section_id'],
-            row["course"],
-            int(row["earliest_slot"]),
-            int(row["latest_slot"]),
-            int(row["enrollment"])
-        )))
+        _read_csv(
+            dirname,
+            CsvFilename.SECTIONS,
+            lambda row: sections.append(
+                Section(
+                    row["section_id"],
+                    row["course"],
+                    int(row["earliest_slot"]),
+                    int(row["latest_slot"]),
+                    int(row["enrollment"]),
+                )
+            ),
+        )
         return sections
 
     section_id: str
@@ -149,11 +174,13 @@ class TimeSlot:
     """
     A single 1.5 hour segment of time that a class can occur within, defined by its start time
     """
+
     index: int
     """Index of the time slot. Used as a sort key"""
 
     time_string: str
     """The human-readable time string"""
+
 
 TIMESLOTS = [
     TimeSlot(0, "8:00 am"),
@@ -168,6 +195,7 @@ TIMESLOTS = [
 """
 Pre-set time slots. These are not subject to change and so don't need to be ingested dynamically
 """
+
 
 @dataclass
 class Decision:
@@ -185,12 +213,14 @@ class Decision:
     room: Classroom
     """Classroom the section is being taught in"""
 
+
 @dataclass
 class Flags:
     """
     The set of flags indicating which constraints are active. All constraints are
     enabled by default.
     """
+
     room_conflict: bool = True
     instructor_conflict: bool = True
     qualification: bool = True
@@ -213,6 +243,7 @@ class Flags:
         """
         for field in fields(self):
             yield field.name, getattr(self, field.name)
+
 
 @dataclass
 class Metadata:

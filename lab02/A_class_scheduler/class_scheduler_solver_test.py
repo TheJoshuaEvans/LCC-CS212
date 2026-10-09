@@ -4,7 +4,15 @@
 import sys
 
 import pytest
-from class_scheduler_data import Classroom, Decision, Flags, Instructor, Section, SolverConflictError, TIMESLOTS
+from class_scheduler_data import (
+    TIMESLOTS,
+    Classroom,
+    Decision,
+    Flags,
+    Instructor,
+    Section,
+    SolverConflictError,
+)
 from class_scheduler_solver import solve
 
 classrooms = Classroom.read("csv")
@@ -12,6 +20,7 @@ instructors = Instructor.read("csv")
 sections = Section.read("csv")
 
 solved, metadata = solve(classrooms, instructors, sections)
+
 
 @pytest.mark.parametrize("decision", solved)
 def test_every_decision_is_complete(decision):
@@ -23,15 +32,18 @@ def test_every_decision_is_complete(decision):
     assert decision.instructor in instructors
     assert decision.room in classrooms
 
+
 # ==== Schedule checker ====
 # One check for each rule that can be switched off, written in plain Python (no Z3). Every check
 # takes one decision and the whole schedule it belongs to, and returns True when that decision
 # breaks the rule.
 
+
 def breaks_room_conflict(decision: Decision, schedule: list[Decision]) -> bool:
     """True if another section uses the same classroom in the same time slot"""
     for other_decision in schedule:
-        if decision is other_decision: continue
+        if decision is other_decision:
+            continue
         if (
             decision.room == other_decision.room
             and decision.slot == other_decision.slot
@@ -39,10 +51,12 @@ def breaks_room_conflict(decision: Decision, schedule: list[Decision]) -> bool:
             return True
     return False
 
+
 def breaks_instructor_conflict(decision: Decision, schedule: list[Decision]) -> bool:
     """True if the instructor teaches another section in the same time slot"""
     for other_decision in schedule:
-        if decision is other_decision: continue
+        if decision is other_decision:
+            continue
         if (
             decision.instructor == other_decision.instructor
             and decision.slot == other_decision.slot
@@ -50,9 +64,11 @@ def breaks_instructor_conflict(decision: Decision, schedule: list[Decision]) -> 
             return True
     return False
 
+
 def breaks_qualification(decision: Decision, schedule: list[Decision]) -> bool:
     """True if the instructor is not qualified to teach the section's course"""
     return decision.section.course not in decision.instructor.qualified_courses
+
 
 def breaks_workload(decision: Decision, schedule: list[Decision]) -> bool:
     """True if the instructor is assigned more sections than their `max_sections` limit"""
@@ -62,6 +78,7 @@ def breaks_workload(decision: Decision, schedule: list[Decision]) -> bool:
             section_count += 1
     return section_count > decision.instructor.max_sections
 
+
 def breaks_time_window(decision: Decision, schedule: list[Decision]) -> bool:
     """True if the section meets outside its `earliest_slot` to `latest_slot` window"""
     return (
@@ -69,13 +86,16 @@ def breaks_time_window(decision: Decision, schedule: list[Decision]) -> bool:
         or decision.slot.index > decision.section.latest_slot
     )
 
+
 def breaks_capacity(decision: Decision, schedule: list[Decision]) -> bool:
     """True if the classroom has fewer seats than the section's enrollment"""
     return decision.room.seats < decision.section.enrollment
 
+
 def breaks_availability(decision: Decision, schedule: list[Decision]) -> bool:
     """True if the section meets in a time slot its instructor is unavailable for"""
     return decision.slot.index in decision.instructor.unavailable_slots
+
 
 RULE_CHECKS = {
     "room_conflict": breaks_room_conflict,
@@ -96,12 +116,14 @@ def test_no_room_time_collisions(decision):
     """
     assert not breaks_room_conflict(decision, solved)
 
+
 @pytest.mark.parametrize("decision", solved)
 def test_no_instructor_time_conflict(decision):
     """
     The same instructor cannot teach different sections at the same time
     """
     assert not breaks_instructor_conflict(decision, solved)
+
 
 @pytest.mark.parametrize("decision", solved)
 def test_instructor_is_qualified(decision):
@@ -110,12 +132,14 @@ def test_instructor_is_qualified(decision):
     """
     assert not breaks_qualification(decision, solved)
 
+
 @pytest.mark.parametrize("decision", solved)
 def test_instructor_workload(decision):
     """
     No instructor should be assigned more sections than their `max_sections` limit.
     """
     assert not breaks_workload(decision, solved)
+
 
 @pytest.mark.parametrize("decision", solved)
 def test_section_time_window(decision):
@@ -124,12 +148,14 @@ def test_section_time_window(decision):
     """
     assert not breaks_time_window(decision, solved)
 
+
 @pytest.mark.parametrize("decision", solved)
 def test_capacity_constraint(decision):
     """
     Each section must be assigned to a classroom with enough seats to accommodate all enrolled students.
     """
     assert not breaks_capacity(decision, solved)
+
 
 @pytest.mark.parametrize("decision", solved)
 def test_instructor_availability(decision):
@@ -138,13 +164,11 @@ def test_instructor_availability(decision):
     """
     assert not breaks_availability(decision, solved)
 
+
 @pytest.mark.parametrize(
     ("data_folder", "expected_rules"),
     [
-        (
-            "unsolvable_data/domain",
-            ["domain_section"]
-        ),
+        ("unsolvable_data/domain", ["domain_section"]),
         (
             "unsolvable_data/room_conflict",
             [
@@ -155,7 +179,7 @@ def test_instructor_availability(decision):
                 "room_conflict_sections",
                 "time_window_section_0",
                 "time_window_section_8",
-            ]
+            ],
         ),
         (
             "unsolvable_data/instructor_conflict",
@@ -167,11 +191,11 @@ def test_instructor_availability(decision):
                 "qualification_section_22",
                 "time_window_section_21",
                 "time_window_section_22",
-            ]
+            ],
         ),
         (
             "unsolvable_data/qualification",
-            ["domain_section_23", "qualification_section_23"]
+            ["domain_section_23", "qualification_section_23"],
         ),
         (
             "unsolvable_data/workload",
@@ -179,16 +203,10 @@ def test_instructor_availability(decision):
                 "domain_section",
                 "qualification_section",
                 "workload_instructor",
-            ]
+            ],
         ),
-        (
-            "unsolvable_data/time_window",
-            ["domain_section_2", "time_window_section_2"]
-        ),
-        (
-            "unsolvable_data/capacity",
-            ["capacity_section_0", "domain_section_0"]
-        ),
+        ("unsolvable_data/time_window", ["domain_section_2", "time_window_section_2"]),
+        ("unsolvable_data/capacity", ["capacity_section_0", "domain_section_0"]),
         (
             "unsolvable_data/availability",
             [
@@ -196,7 +214,7 @@ def test_instructor_availability(decision):
                 "domain_section_23",
                 "qualification_section_23",
                 "time_window_section_23",
-            ]
+            ],
         ),
     ],
 )
@@ -205,7 +223,11 @@ def test_unsolvable_data_reports_the_broken_rule(data_folder, expected_rules):
     An unsolvable data set should be rejected, with the rules it breaks among the reported conflicts
     """
     with pytest.raises(SolverConflictError) as error_info:
-        solve(Classroom.read(data_folder), Instructor.read(data_folder), Section.read(data_folder))
+        solve(
+            Classroom.read(data_folder),
+            Instructor.read(data_folder),
+            Section.read(data_folder),
+        )
 
     for expected_rule in expected_rules:
         # Match the whole label or a label that continues after an underscore, so that
@@ -214,6 +236,7 @@ def test_unsolvable_data_reports_the_broken_rule(data_folder, expected_rules):
             conflict == expected_rule or conflict.startswith(f"{expected_rule}_")
             for conflict in error_info.value.conflicts
         )
+
 
 @pytest.mark.parametrize(
     "flag_name",
@@ -243,6 +266,7 @@ def test_disabling_a_flag_lifts_its_rule(flag_name):
 
     assert len(decisions) == len(unsolvable_sections)
 
+
 @pytest.mark.parametrize("flag_name", RULE_CHECKS)
 def test_schedule_made_without_a_rule_is_caught(flag_name):
     """
@@ -260,6 +284,7 @@ def test_schedule_made_without_a_rule_is_caught(flag_name):
     breaks_rule = RULE_CHECKS[flag_name]
 
     assert any(breaks_rule(decision, broken_schedule) for decision in broken_schedule)
+
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__]))
