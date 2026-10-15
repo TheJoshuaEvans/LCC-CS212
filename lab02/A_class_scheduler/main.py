@@ -1,4 +1,5 @@
-# Joshua Evans (thejoshuaevans.com)
+# Joshua Evans (thejoshuaevans.com) 2026-10-15
+# Written with help from Claude AI
 # Original instructions:
 # https://lcc-cit.github.io/CS212-CourseMaterials/Labs/Lab02-ConstraintSolvers/CS212_Lab02_Instructions_GroupA-V2.html
 import sys

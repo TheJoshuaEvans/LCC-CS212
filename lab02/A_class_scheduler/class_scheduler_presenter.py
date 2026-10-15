@@ -1,3 +1,5 @@
+# Joshua Evans (thejoshuaevans.com) 2026-10-15
+# Written with help from Claude AI
 from class_scheduler_data import Decision
 
 

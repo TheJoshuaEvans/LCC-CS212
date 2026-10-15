@@ -1,4 +1,5 @@
 """Maksym Kholodenko, Group B, Lab 2"""
+
 """Z3 constraint model for CS 212 Lab 2.
 
 The solver receives already-loaded data and returns either a valid schedule or
@@ -6,7 +7,7 @@ the constraint groups that make the data unsatisfiable.
 """
 
 try:
-    from z3 import Solver, Int, Bool, Or, Implies, Sum, If, sat, unsat
+    from z3 import Bool, If, Implies, Int, Or, Solver, Sum, sat, unsat
 except ImportError as error:
     raise ImportError(
         "The z3-solver package is required. Install it with: pip install z3-solver"
@@ -132,9 +133,15 @@ def solve_schedule(flights, crews, aircraft, timeout_ms=10000):
         schedule = []
 
         for j, flight in enumerate(flights):
-            slot_value = model.eval(variables["slot"][j], model_completion=True).as_long()
-            crew_index = model.eval(variables["crew"][j], model_completion=True).as_long()
-            plane_index = model.eval(variables["plane"][j], model_completion=True).as_long()
+            slot_value = model.eval(
+                variables["slot"][j], model_completion=True
+            ).as_long()
+            crew_index = model.eval(
+                variables["crew"][j], model_completion=True
+            ).as_long()
+            plane_index = model.eval(
+                variables["plane"][j], model_completion=True
+            ).as_long()
 
             crew_info = crews[crew_index]
             aircraft_info = aircraft[plane_index]

@@ -1,4 +1,5 @@
-# Joshua Evans (thejoshuaevans.com)
+# Joshua Evans (thejoshuaevans.com) 2026-10-15
+# Written with help from Claude AI
 """Tests for the Lab 2 (Group A) class scheduler solver."""
 
 import sys

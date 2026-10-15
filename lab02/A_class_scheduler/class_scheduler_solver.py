@@ -1,4 +1,5 @@
-# Joshua Evans (thejoshuaevans.com)
+# Joshua Evans (thejoshuaevans.com) 2026-10-15
+# Written with help from Claude AI
 from class_scheduler_data import (
     PART_TIME_ALLOWED_SECTION_COUNT,
     TIMESLOTS,
