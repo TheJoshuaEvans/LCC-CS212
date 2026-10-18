@@ -9,5 +9,10 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 
+# Lab 3 language data (written by lab03/fetch_data.py)
+lab03/html/
+lab03/paragraphs/
+lab03/short_paragraphs/
+
 # Claude Code per-machine settings (project skills in .claude/ are shared)
 .claude/settings.local.json

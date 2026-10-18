@@ -24,19 +24,20 @@ Layout:
 - `docs/LectureNotes/CS212-UnitNN-*.md` — per-unit notes; `-0-Overview` files have the weekly overview. Also `SetUpPythonAndLibrariesForAI.md`, `PythonCodingStyleCheatSheet.md`, `MathReviewForAI.md`. `FutureTopics/` is not current coursework.
 - `docs/Labs/LabNN-*/Group{A,B,C}/` — per-group lab instructions and starter code; shared files (rubrics, code review forms) sit one level up. `CodeReviewProcedure.md` and `PythonStyleAndBestPracticesChecklist.md` apply to every lab.
 - `docs/Labs/TermProject/` — requirements, presentation guide, rubric.
-- `Tutorials/scikit-learn-1.7/`, `JupyterNotebooks/`, `ResearchNotes/` — supporting material.
+- `docs/Examples/<Name>/` — the professor's worked examples (e.g. `Lab02-Scheduling`, `SpamDetection`); Canvas links to them as downloads.
+- `docs/Tutorials/scikit-learn-1.7/`, `JupyterNotebooks/`, `ResearchNotes/` — supporting material.
 
 Files named `*-old`, `*-draft`, `*_Draft`, or `.html` copies inside other labs' folders are stale or in progress; prefer the `.md` in the matching folder and mention it if only a draft exists.
 
 ### Lab numbers differ between Canvas and the repo
 
-Canvas has no Lab 3, so from Lab 4 on each Canvas number is one higher than the repo folder:
+Canvas has no Lab 4 (midterm week), so from Lab 5 on each Canvas number is one higher than the repo folder. `Lab02-RuleBasedSystems` is a previous term's Lab 2 and is not current coursework.
 
 | Canvas | Repo folder |
 |---|---|
 | Lab 1 | `Lab01-Python` |
-| Lab 2 | `Lab02-RuleBasedSystems` |
-| Lab 4 | `Lab03-TextClassification` |
+| Lab 2 | `Lab02-ConstraintSolvers` |
+| Lab 3 | `Lab03-TextClassification` |
 | Lab 5 | `Lab04-ANN` |
 | Lab 6 | `Lab05-AI-Coding` |
 | Lab 7 | `Lab06-ChatCompletion` |
@@ -44,7 +45,7 @@ Canvas has no Lab 3, so from Lab 4 on each Canvas number is one higher than the 
 
 Students usually speak in Canvas numbers. Verify against the Canvas module links if this table seems off — it may change.
 
-Some lab instructions are Canvas pages, not repo links (currently Lab 4 Versions B/C, Labs 6–8). Check `modules` for the item type: for a `Page`, read it with `canvas.py page <slug>`, and compare with the repo version, since they can differ.
+Some lab instructions are Canvas pages, not repo links (currently Labs 6–8). Check `modules` for the item type: for a `Page`, read it with `canvas.py page <slug>`, and compare with the repo version, since they can differ.
 
 ## 2. Canvas — course 3948 at canvas.lanecc.edu
 
