@@ -14,5 +14,8 @@ lab03/html/
 lab03/paragraphs/
 lab03/short_paragraphs/
 
+# Lab 4 HC3 data (written by lab04/fetch_data.py)
+lab04/data/
+
 # Claude Code per-machine settings (project skills in .claude/ are shared)
 .claude/settings.local.json
