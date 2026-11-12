@@ -31,19 +31,20 @@ Files named `*-old`, `*-draft`, `*_Draft`, or `.html` copies inside other labs' 
 
 ### Lab numbers differ between Canvas and the repo
 
-Canvas has no Lab 4 (midterm week), so from Lab 5 on each Canvas number is one higher than the repo folder. `Lab02-RuleBasedSystems` is a previous term's Lab 2 and is not current coursework.
+Canvas and repo lab numbers match. `Lab02-RuleBasedSystems` is a previous term's Lab 2 and is not current coursework.
 
 | Canvas | Repo folder |
 |---|---|
 | Lab 1 | `Lab01-Python` |
 | Lab 2 | `Lab02-ConstraintSolvers` |
 | Lab 3 | `Lab03-TextClassification` |
-| Lab 5 | `Lab04-ANN` |
-| Lab 6 | `Lab05-AI-Coding` |
-| Lab 7 | `Lab06-ChatCompletion` |
-| Lab 8 | `Lab07-MCP` |
+| Lab 4 | `Lab04-ClassifierEvaluation` |
+| Lab 5 | `Lab05-ANN` |
+| Lab 6 | `Lab06-AI-Coding` |
+| Lab 7 | `Lab07-ChatCompletion` |
+| Lab 8 | `Lab08-MCP` |
 
-Students usually speak in Canvas numbers. Verify against the Canvas module links if this table seems off — it may change.
+The professor renumbers folders mid-term. Verify against the Canvas module links if this table seems off.
 
 Some lab instructions are Canvas pages, not repo links (currently Labs 6–8). Check `modules` for the item type: for a `Page`, read it with `canvas.py page <slug>`, and compare with the repo version, since they can differ.
 
@@ -61,7 +62,7 @@ uv run python .claude/skills/course-materials/scripts/canvas.py <command>
 | `assignment <id>` | one assignment's description as text |
 | `modules` | module structure with each item's page slug or external URL |
 | `page <slug-or-title>` | a Canvas wiki page as text |
-| `announcements` | recent announcements |
+| `announcements` | recent announcements (none after 2026-10-21: the professor posts them on Discord only, which this script can't read; ask the user) |
 | `syllabus` | Canvas syllabus body |
 | `get <path>` | raw JSON for any GET under `/courses/3948` (e.g. `/quizzes`, `/files`) |
 
